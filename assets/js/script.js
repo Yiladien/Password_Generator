@@ -21,17 +21,11 @@ generateBtn.addEventListener("click", writePassword);
 const passCharacterMin = 8;
 const passCharacterMax = 128;
 
+// password character arrays
+var lowerCaseLetters = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+var symbolCharacters = ["!","\"","#","$","%","&","\'","(",")","*","+",",","-",".","/",":",";","<","=",">","?","@","[","\\","]","^","_","`","{","|","}","~"];
 
-//initial function
-  var generatePassword = function () {
-    passwordCriteria();
 
-    //test line below
-    var newPassword = Math.random();
-
-    return newPassword;
-    debugger;
-}
 
 
 // prompt 1 - password length
@@ -52,7 +46,7 @@ const passCharacterMax = 128;
     }
   };
 
-// prompt 2, 3, 4, 5 - upper, lower, numeric, special boolean prompts
+// prompt 2, 3, 4, 5 - lower, upper, numeric, special boolean prompts
    function passwordBooleonPrompt(passwordPropertyType) {
     // ask user if they would like upper, lower, numeric, special characters
     var passwordPropertyBooleon = window.confirm("Do you want " + passwordPropertyType + " characters in your password?");
@@ -70,16 +64,72 @@ const passCharacterMax = 128;
 var passwordCriteria = {
   // length between 8 8and 128 characters
     charCount: passwordLengthPrompt(),
-  // include uppercase
-    includeUpper: passwordBooleonPrompt("UPPERCASE"),
   // include lowercase
     includeLower: passwordBooleonPrompt("LOWERCASE"),
+  // include uppercase
+    includeUpper: passwordBooleonPrompt("UPPERCASE"),
   // include numeric
     includeNumeric: passwordBooleonPrompt("NUMERIC"),
   //include special characters
-    includeSpecial: passwordBooleonPrompt("SPECIAL SYMBOL"),
+    includeSpecial: passwordBooleonPrompt("SPECIAL SYMBOL")
 };
 
+function createCharacterList () {
+  if(!passwordCriteria.includeLower && !passwordCriteria.includeUpper && !passwordCriteria.includeNumeric && !passwordCriteria.includeSpecial) {
+    // window.alert("You did not provide criteria for the password. Try again.");
+    passwordCriteria.includeLower = passwordBooleonPrompt("LOWERCASE");
+    passwordCriteria.includeUpper = passwordBooleonPrompt("UPPERCASE");
+    passwordCriteria.includeNumeric = passwordBooleonPrompt("NUMERIC");
+    passwordCriteria.includeSpecial = passwordBooleonPrompt("SPECIAL SYMBOL");
+    generatePassword();
+  } else {
+    var i = 0;
+    var len = 0;
+    var allCharacterList = [];
+
+    if(passwordCriteria.includeLower) {
+      len = allCharacterList.length;
+      for (i = 0; i < lowerCaseLetters.length; i++) {
+        allCharacterList[i+len] = lowerCaseLetters[i-len];
+      }
+    };
+
+    if(passwordCriteria.includeUpper) {
+      len = allCharacterList.length;
+      for (i = 0; i < lowerCaseLetters.length; i++) {
+        allCharacterList[i+len] = lowerCaseLetters[i].toUpperCase();
+      }
+    };
+
+    if(passwordCriteria.includeNumeric) {
+      len = allCharacterList.length;
+      for (i = 0; i < 10; i++) {
+        allCharacterList[i+len] = i.toString();
+      }
+    };
+
+    if(passwordCriteria.includeSpecial) {
+      len = allCharacterList.length;
+      for (i = 0; i < symbolCharacters.length; i++) {
+        allCharacterList[i+len] = symbolCharacters[i];
+      }
+    };
+    return allCharacterList[5];
+  };
+}
+
+
+
+//initial function
+  var generatePassword = function () {
+    
+
+    //test line below
+    // var newPassword = createCharacterList();
+    var newPassword = createCharacterList();
+    return newPassword;
+    debugger;
+};
 
 
 
@@ -140,3 +190,11 @@ var passwordCriteria = {
 
 
 
+// ,
+//     reset: function() {
+//       this.charCount = passwordLengthPrompt();
+//       this.includeLower = passwordBooleonPrompt("LOWERCASE");
+//       this.includeUpper = passwordBooleonPrompt("UPPERCASE");
+//       this.includeNumeric = passwordBooleonPrompt("NUMERIC");
+//       this.includeSpecial = passwordBooleonPrompt("SPECIAL SYMBOL");
+//     }
