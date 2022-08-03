@@ -43,20 +43,18 @@
 
 // prompt 1 - password length
   function passwordLengthPrompt() {
-    // ask user how long the password should be(must be between 8 and 128)
-    var passLength = window.prompt(
-      "Enter the number of characters for the password.\n(Must be between 8 and 128)"
-    );
+    passLength = 0;
+    while (passLength < 8 || passLength > 128) {
+      // ask user how long the password should be(must be between 8 and 128)
+      passLength = window.prompt(
+        "Enter the number of characters for the password.\n(Must be between 8 and 128)"
+      );
 
-    // converts prompt response to number
-    passLength = parseInt(passLength);
-
-    if (passLength >=8 && passLength <= 128) {
-      passwordCriteria.charCount;
-    } else {
-      window.alert("You did not enter a valid number.");
-      passwordLengthPrompt();
+      // converts prompt response to number
+      passLength = parseInt(passLength);
     }
+   
+    return passLength;
   }
 
 
@@ -119,7 +117,7 @@
 // start password creation after all parameters accepted
 function createPassword() {
   // stores the password character criteria
-    var characterList = createCharacterList ();
+    var characterList = createCharacterList();
     var generatedPassword = [];
 
   // while loop to ensure password contains each type of character user chose
@@ -135,69 +133,68 @@ function createPassword() {
         for (j = 0; j < passwordCriteria.charCount; j++) {
           // creates a random number between 0 and one less the length of the characterList array as the position in the character list array
           // assigns to the next position in the generatedPassword array
-            generatedPassword[i] = characterList[(Math.floor(Math.random() * characterList.length))];
+            generatedPassword[j] = characterList[(Math.floor(Math.random() * characterList.length))];
         }
         
         // Resetting pass count for each time it loops
         passwordPass = 0;
 
-        // Testing a lowercase letter exists in password if chosen
-        if(passwordCriteria.includeLower) {
-          for (k = 0; k < lowerCaseLetters.length; k++) {
-            for(l = 0; l < generatedPassword.length; l++) {
-              if (generatedPassword[l] === lowerCaseLetters[k]) {
-                passwordPass++;
-                l=generatedPassword.length;
-                k=lowerCaseLetters.length;
+        //TEST START
+          // Testing a lowercase letter exists in password if chosen
+          if(passwordCriteria.includeLower) {
+            for (k = 0; k < lowerCaseLetters.length; k++) {
+              for(l = 0; l < generatedPassword.length; l++) {
+                if (generatedPassword[l] === lowerCaseLetters[k]) {
+                  passwordPass++;
+                  l=generatedPassword.length;
+                  k=lowerCaseLetters.length;
+                }
               }
             }
           }
-        }
-        
-        // Testing a uppercase letter exists in password if chosen
-        if(passwordCriteria.includeUpper) {
-          for (k = 0; k < lowerCaseLetters.length; k++) {
-            for(l = 0; l < generatedPassword.length; l++) {
-              if (generatedPassword[l] === lowerCaseLetters[k].toUpperCase()) {
-                passwordPass++;
-                l=generatedPassword.length;
-                k=lowerCaseLetters.length;
+          
+          // Testing a uppercase letter exists in password if chosen
+          if(passwordCriteria.includeUpper) {
+            for (k = 0; k < lowerCaseLetters.length; k++) {
+              for(l = 0; l < generatedPassword.length; l++) {
+                if (generatedPassword[l] === lowerCaseLetters[k].toUpperCase()) {
+                  passwordPass++;
+                  l=generatedPassword.length;
+                  k=lowerCaseLetters.length;
+                }
               }
             }
           }
-        }
 
-        // Testing a number exists in password if chosen
-        if(passwordCriteria.includeNumeric) {
-          for (k = 0; k < 10; k++) {
-            for(l = 0; l < generatedPassword.length; l++) {
-              if (generatedPassword[l] === k.toString()) {
-                passwordPass++;
-                l=generatedPassword.length;
-                k=10;
+          // Testing a number exists in password if chosen
+          if(passwordCriteria.includeNumeric) {
+            for (k = 0; k < 10; k++) {
+              for(l = 0; l < generatedPassword.length; l++) {
+                if (generatedPassword[l] === k.toString()) {
+                  passwordPass++;
+                  l=generatedPassword.length;
+                  k=10;
+                }
               }
             }
           }
-        }
-    
-        if(passwordCriteria.includeSpecial) {
-          for (k = 0; k < symbolCharacters.length; k++) {
-            for(l = 0; l < generatedPassword.length; l++) {
-              if (generatedPassword[l] === symbolCharacters[k]) {
-                passwordPass++;
-                l=generatedPassword.length;
-                k=symbolCharacters.length;
+      
+          if(passwordCriteria.includeSpecial) {
+            for (k = 0; k < symbolCharacters.length; k++) {
+              for(l = 0; l < generatedPassword.length; l++) {
+                if (generatedPassword[l] === symbolCharacters[k]) {
+                  passwordPass++;
+                  l=generatedPassword.length;
+                  k=symbolCharacters.length;
+                }
               }
             }
           }
-        }
+        //TEST END
     }
 
   // after password is created and passed, combining array into a single string
     var customPassword = combineArrayToString(generatedPassword,generatedPassword.length) 
-    for (var m = 0; m < generatedPassword.length; m++) {
-      customPassword = customPassword + generatedPassword[m];
-    }
   
   // sending back to generate password function to provide to the html
   return customPassword;
@@ -218,6 +215,11 @@ function combineArrayToString(array,arrayLength) {
       passwordCriteria.charCount = passwordLengthPrompt();
     
     // Request password criteria (lowercase, uppercase, numeric, symbols)
+      // resetting properties that retain when browser is not closed/refreshed
+        passwordCriteria.includeLower = false;
+        passwordCriteria.includeUpper = false;
+        passwordCriteria.includeNumeric = false;
+        passwordCriteria.includeSpecial = false;
       // while loop if no criteria is selected
       while(!passwordCriteria.includeLower && !passwordCriteria.includeUpper && !passwordCriteria.includeNumeric && !passwordCriteria.includeSpecial) {
         passwordCriteria.includeLower = passwordBooleonPrompt("LOWERCASE");
