@@ -2,34 +2,47 @@
 
 
 // Get references to the #generate element
-var generateBtn = document.querySelector("#generate");
+  var generateBtn = document.querySelector("#generate");
 
 // Write password to the #password input
-function writePassword() {
-  var password = generatePassword();
-  var passwordText = document.querySelector("#password");
+  function writePassword() {
+    var password = generatePassword();
+    var passwordText = document.querySelector("#password");
 
-  passwordText.value = password;
+    passwordText.value = password;
 
-}
+  }
 
 // Add event listener to generate button
-generateBtn.addEventListener("click", writePassword);
+  generateBtn.addEventListener("click", writePassword);
 
 
 // password min and max length
-const passCharacterMin = 8;
-const passCharacterMax = 128;
+  const passCharacterMin = 8;
+  const passCharacterMax = 128;
 
 // password character arrays
-var lowerCaseLetters = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
-var symbolCharacters = ["!","\"","#","$","%","&","\'","(",")","*","+",",","-",".","/",":",";","<","=",">","?","@","[","\\","]","^","_","`","{","|","}","~"];
+  var lowerCaseLetters = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z"];
+  var symbolCharacters = ["!","\"","#","$","%","&","\'","(",")","*","+",",","-",".","/",":",";","<","=",">","?","@","[","\\","]","^","_","`","{","|","}","~"];
 
 
+// object containing all password criteria
+  var passwordCriteria = {
+    // length between 8 8and 128 characters
+      charCount: 0,
+    // include lowercase
+      includeLower: false,
+    // include uppercase
+      includeUpper: false,
+    // include numeric
+      includeNumeric: false,
+    //include special characters
+      includeSpecial: false
+  }
 
 
 // prompt 1 - password length
-  var passwordLengthPrompt = function() {
+  function passwordLengthPrompt() {
     // ask user how long the password should be(must be between 8 and 128)
     var passLength = window.prompt(
       "Enter the number of characters for the password.\n(Must be between 8 and 128)"
@@ -39,50 +52,36 @@ var symbolCharacters = ["!","\"","#","$","%","&","\'","(",")","*","+",",","-",".
     passLength = parseInt(passLength);
 
     if (passLength >=8 && passLength <= 128) {
-      return passLength;
+      passwordCriteria.charCount;
     } else {
       window.alert("You did not enter a valid number.");
       passwordLengthPrompt();
     }
-  };
+  }
+
 
 // prompt 2, 3, 4, 5 - lower, upper, numeric, special boolean prompts
-   function passwordBooleonPrompt(passwordPropertyType) {
+  function passwordBooleonPrompt(passwordPropertyType) {
     // ask user if they would like upper, lower, numeric, special characters
     var passwordPropertyBooleon = window.confirm("Do you want " + passwordPropertyType + " characters in your password?");
 
-    // converts prompt response to number
-    // passwordPropertyBooleon = parseInt(passwordPropertyBooleon);
-
       return passwordPropertyBooleon;
 
-  };
+  }
 
 
 
+// holds password criteria as properties
+  var passwordCriteria = {
+      charCount: 0,
+      includeLower: false,
+      includeUpper: false,
+      includeNumeric: false,
+      includeSpecial: false
+  }
 
-var passwordCriteria = {
-  // length between 8 8and 128 characters
-    charCount: passwordLengthPrompt(),
-  // include lowercase
-    includeLower: passwordBooleonPrompt("LOWERCASE"),
-  // include uppercase
-    includeUpper: passwordBooleonPrompt("UPPERCASE"),
-  // include numeric
-    includeNumeric: passwordBooleonPrompt("NUMERIC"),
-  //include special characters
-    includeSpecial: passwordBooleonPrompt("SPECIAL SYMBOL")
-};
-
-function createCharacterList () {
-  if(!passwordCriteria.includeLower && !passwordCriteria.includeUpper && !passwordCriteria.includeNumeric && !passwordCriteria.includeSpecial) {
-    // window.alert("You did not provide criteria for the password. Try again.");
-    passwordCriteria.includeLower = passwordBooleonPrompt("LOWERCASE");
-    passwordCriteria.includeUpper = passwordBooleonPrompt("UPPERCASE");
-    passwordCriteria.includeNumeric = passwordBooleonPrompt("NUMERIC");
-    passwordCriteria.includeSpecial = passwordBooleonPrompt("SPECIAL SYMBOL");
-    generatePassword();
-  } else {
+// creates custom array filled with all characters based on the user selected criteria (lowercase, uppercase, numbers, symbols)
+  function createCharacterList () {
     var i = 0;
     var len = 0;
     var allCharacterList = [];
@@ -114,22 +113,125 @@ function createCharacterList () {
         allCharacterList[i+len] = symbolCharacters[i];
       }
     };
-    return allCharacterList[5];
-  };
+    return allCharacterList;
+  }
+
+// start password creation after all parameters accepted
+function createPassword() {
+  // stores the password character criteria
+    var characterList = createCharacterList ();
+    var generatedPassword = [];
+
+  // while loop to ensure password contains each type of character user chose
+    //creating variables outside loops to avoid redundancy
+    var passwordTypeCount = passwordCriteria.includeLower + passwordCriteria.includeUpper + passwordCriteria.includeNumeric + passwordCriteria.includeSpecial;
+    var passwordPass = 0
+    var j = 0
+    var k = 0
+    var l = 0
+
+    while (passwordPass < passwordTypeCount) {
+      // for loop to fill each custom character into an array equal to the size of the password
+        for (j = 0; j < passwordCriteria.charCount; j++) {
+          // creates a random number between 0 and one less the length of the characterList array as the position in the character list array
+          // assigns to the next position in the generatedPassword array
+            generatedPassword[i] = characterList[(Math.floor(Math.random() * characterList.length))];
+        }
+        
+        // Resetting pass count for each time it loops
+        passwordPass = 0;
+
+        // Testing a lowercase letter exists in password if chosen
+        if(passwordCriteria.includeLower) {
+          for (k = 0; k < lowerCaseLetters.length; k++) {
+            for(l = 0; l < generatedPassword.length; l++) {
+              if (generatedPassword[l] === lowerCaseLetters[k]) {
+                passwordPass++;
+                l=generatedPassword.length;
+                k=lowerCaseLetters.length;
+              }
+            }
+          }
+        }
+        
+        // Testing a uppercase letter exists in password if chosen
+        if(passwordCriteria.includeUpper) {
+          for (k = 0; k < lowerCaseLetters.length; k++) {
+            for(l = 0; l < generatedPassword.length; l++) {
+              if (generatedPassword[l] === lowerCaseLetters[k].toUpperCase()) {
+                passwordPass++;
+                l=generatedPassword.length;
+                k=lowerCaseLetters.length;
+              }
+            }
+          }
+        }
+
+        // Testing a number exists in password if chosen
+        if(passwordCriteria.includeNumeric) {
+          for (k = 0; k < 10; k++) {
+            for(l = 0; l < generatedPassword.length; l++) {
+              if (generatedPassword[l] === k.toString()) {
+                passwordPass++;
+                l=generatedPassword.length;
+                k=10;
+              }
+            }
+          }
+        }
+    
+        if(passwordCriteria.includeSpecial) {
+          for (k = 0; k < symbolCharacters.length; k++) {
+            for(l = 0; l < generatedPassword.length; l++) {
+              if (generatedPassword[l] === symbolCharacters[k]) {
+                passwordPass++;
+                l=generatedPassword.length;
+                k=symbolCharacters.length;
+              }
+            }
+          }
+        }
+    }
+
+  // after password is created and passed, combining array into a single string
+    var customPassword = combineArrayToString(generatedPassword,generatedPassword.length) 
+    for (var m = 0; m < generatedPassword.length; m++) {
+      customPassword = customPassword + generatedPassword[m];
+    }
+  
+  // sending back to generate password function to provide to the html
+  return customPassword;
 }
 
+function combineArrayToString(array,arrayLength) {
+  var newString = ""
+  for (var m = 0; m < arrayLength; m++) {
+    newString = newString + array[m];
+  }
+  return newString;
+}
 
-
-//initial function
+// button start function
   var generatePassword = function () {
     
+    // Request password length
+      passwordCriteria.charCount = passwordLengthPrompt();
+    
+    // Request password criteria (lowercase, uppercase, numeric, symbols)
+      // while loop if no criteria is selected
+      while(!passwordCriteria.includeLower && !passwordCriteria.includeUpper && !passwordCriteria.includeNumeric && !passwordCriteria.includeSpecial) {
+        passwordCriteria.includeLower = passwordBooleonPrompt("LOWERCASE");
+        passwordCriteria.includeUpper = passwordBooleonPrompt("UPPERCASE");
+        passwordCriteria.includeNumeric = passwordBooleonPrompt("NUMERIC");
+        passwordCriteria.includeSpecial = passwordBooleonPrompt("SPECIAL SYMBOL");
+      }
 
-    //test line below
-    // var newPassword = createCharacterList();
-    var newPassword = createCharacterList();
-    return newPassword;
-    debugger;
-};
+    // generating password
+      var newPassword = createPassword();
+    
+    // passing password to display
+      return newPassword;
+  }
 
 
 
@@ -188,13 +290,3 @@ function createCharacterList () {
 // Present user with password
 
 
-
-
-// ,
-//     reset: function() {
-//       this.charCount = passwordLengthPrompt();
-//       this.includeLower = passwordBooleonPrompt("LOWERCASE");
-//       this.includeUpper = passwordBooleonPrompt("UPPERCASE");
-//       this.includeNumeric = passwordBooleonPrompt("NUMERIC");
-//       this.includeSpecial = passwordBooleonPrompt("SPECIAL SYMBOL");
-//     }
