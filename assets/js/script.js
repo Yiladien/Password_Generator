@@ -35,7 +35,7 @@ const passCharacterMax = 128;
 
 
 // prompt 1 - password length
-  var passLengthPrompt = function() {
+  var passwordLengthPrompt = function() {
     // ask user how long the password should be(must be between 8 and 128)
     var passLength = window.prompt(
       "Enter the number of characters for the password.\n(Must be between 8 and 128)"
@@ -48,26 +48,20 @@ const passCharacterMax = 128;
       return passLength;
     } else {
       window.alert("You did not enter a valid number.");
-      passLengthPrompt();
+      passwordLengthPrompt();
     }
   };
 
-// prompt 2 - password length
-  var passLengthPrompt = function() {
-    // ask user how long the password should be(must be between 8 and 128)
-    var passLength = window.prompt(
-      "Enter the number of characters for the password.\n(Must be between 8 and 128)"
-    );
+// prompt 2, 3, 4, 5 - upper, lower, numeric, special boolean prompts
+   function passwordBooleonPrompt(passwordPropertyType) {
+    // ask user if they would like upper, lower, numeric, special characters
+    var passwordPropertyBooleon = window.confirm("Do you want " + passwordPropertyType + " characters in your password?");
 
     // converts prompt response to number
-    passLength = parseInt(passLength);
+    // passwordPropertyBooleon = parseInt(passwordPropertyBooleon);
 
-    if (passLength >= passCharacterMin && passLength <= passCharacterMax) {
-      return passLength;
-    } else {
-      window.alert("You did not enter a valid number.");
-      passLengthPrompt();
-    }
+      return passwordPropertyBooleon;
+
   };
 
 
@@ -75,50 +69,15 @@ const passCharacterMax = 128;
 
 var passwordCriteria = {
   // length between 8 8and 128 characters
-    charCount: passLengthPrompt(),
+    charCount: passwordLengthPrompt(),
   // include uppercase
-    upperLowercase: function () {
-      var playAgainConfirm = window.confirm("Would you like to play again?");
-
-  if (playAgainConfirm) {
-    startGame();
-  } else {
-    window.alert("Thank you for playing Robot Gladiators! Come back soon!");
-  }
-    },
+    includeUpper: passwordBooleonPrompt("UPPERCASE"),
   // include lowercase
-    upperLowercase: 100,
+    includeLower: passwordBooleonPrompt("LOWERCASE"),
   // include numeric
-    includeNumeric: 10,
+    includeNumeric: passwordBooleonPrompt("NUMERIC"),
   //include special characters
-    includeSpecial: 10,
-
-
-
-
-    // reset: function() {
-    //   this.health = 100;
-    //   this.money = 10;
-    //   this.attack = 10;
-    // },
-    // refillHealth: function() {
-    //   if (this.money >= 7) {
-    //     window.alert("Refilling player's health by 20 for 7 dollars.");
-    //     this.health += 20;
-    //     this.money -= 7;
-    //   } else {
-    //     window.alert("You don't have enough money!");
-    //   }
-    // },
-    // upgradeAttack: function() {
-    //   if (this.money >= 7) {
-    //     window.alert("Upgrading player's attack by 6 for 7 dollars.");
-    //     this.attack += 6;
-    //     this.money -= 7;
-    //   } else {
-    //     window.alert("You don't have enough money!");
-    //   }
-    // }
+    includeSpecial: passwordBooleonPrompt("SPECIAL SYMBOL"),
 };
 
 
