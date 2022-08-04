@@ -1,6 +1,6 @@
 # Password Generator Starter Code
 
-## Description
+## :lock: Description
 Password generator application that provides the following features:
 - Length of password from 8 to 128 characters
 - If the password should contain:
@@ -13,11 +13,13 @@ Password generator application that provides the following features:
 - Mobile responsive layout
 
 ## Application
-Below is the link to the application:
-[Link](https://yiladien.github.io/Password_Generator/)
+Link to the application:
+[Password Generator](https://yiladien.github.io/Password_Generator/)
+
 
 ## Preview
-Screenshot of the application screens
+Screenshot of the application screens 
+
 ### Desktop Version:
 ![The text "Password Generator" above a read-only text box with a red button "Generate Password" and a second red button "Re-Generate Password in a horizontal screen layout"](./assets/images/application-preview1.jpg)
 
