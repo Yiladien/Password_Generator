@@ -3,6 +3,7 @@
 
 // Get references to the #generate element
   var generateBtn = document.querySelector("#generate");
+  var regenerateBtn = document.querySelector("#regenerate");
 
 // Write password to the #password input
   function writePassword() {
@@ -13,8 +14,19 @@
 
   }
 
+// Write password to the #password input
+function rewritePassword() {
+  var password = regeneratePassword();
+  var passwordText = document.querySelector("#password");
+
+  passwordText.value = password;
+
+}
+
+
 // Add event listener to generate button
   generateBtn.addEventListener("click", writePassword);
+  regenerateBtn.addEventListener("click", rewritePassword);
 
 
 // password min and max length
@@ -43,8 +55,8 @@
 
 // prompt 1 - password length
   function passwordLengthPrompt() {
-    passLength = 0;
-    while (passLength < 8 || passLength > 128) {
+    var passLengthTest = false;
+    while (passLengthTest === false) {
       // ask user how long the password should be(must be between 8 and 128)
       passLength = window.prompt(
         "Enter the number of characters for the password.\n(Must be between 8 and 128)"
@@ -52,6 +64,12 @@
 
       // converts prompt response to number
       passLength = parseInt(passLength);
+
+      if (passLength >= passCharacterMin && passLength <= passCharacterMax) {
+        passLengthTest = true;
+      } else {
+        window.alert("You did not enter correct criteria. Please try again.");
+      }
     }
    
     return passLength;
@@ -228,6 +246,13 @@ function combineArrayToString(array,arrayLength) {
         passwordCriteria.includeSpecial = passwordBooleonPrompt("SPECIAL SYMBOL");
       }
 
+    // saving password criteria in local storage for re-generation button
+      localStorage.setItem("passLength", passwordCriteria.charCount);
+      localStorage.setItem("passLower", passwordCriteria.includeLower);
+      localStorage.setItem("passUpper", passwordCriteria.includeUpper);
+      localStorage.setItem("passNumber", passwordCriteria.includeNumeric);
+      localStorage.setItem("passSpecial", passwordCriteria.includeSpecial);
+
     // generating password
       var newPassword = createPassword();
     
@@ -235,6 +260,23 @@ function combineArrayToString(array,arrayLength) {
       return newPassword;
   }
 
+  // button start function
+  var regeneratePassword = function () {
+    
+      // retrieving password criteria in local storage for re-generation button
+        passwordCriteria.charCount = parseInt(localStorage.getItem("passLength"));
+        passwordCriteria.includeLower = localStorage.getItem("passLower") === "true" ? true : false;
+        passwordCriteria.includeUpper = localStorage.getItem("passUpper") === "true" ? true : false;
+        passwordCriteria.includeNumeric = localStorage.getItem("passNumber") === "true" ? true : false;
+        passwordCriteria.includeSpecial = localStorage.getItem("passSpecial") === "true" ? true : false;
+
+
+    // generating password
+      var newPassword = createPassword();
+    
+    // passing password to display
+      return newPassword;
+  }
 
 
 // Pseudocode
