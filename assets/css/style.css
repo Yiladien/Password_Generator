@@ -58,6 +58,10 @@ header {
   text-align: center;
 }
 
+.card-footer form {
+  text-align: left;
+}
+
 .card-footer::before {
   content: " ";
   display: block;
@@ -74,10 +78,9 @@ header {
 
 .btn {
   border: none;
-  background-color: hsl(360, 91%, 36%);
+  background-color: hsl(233, 69%, 48%);
   border-radius: 25px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 6px 0px rgba(0, 0, 0, 0.2) 0px 1px 1px
-    0px;
+  box-shadow: rgba(0, 0, 0, 0.2) 2px 3px 6px 0px;
   color: hsl(0, 0%, 100%);
   display: inline-block;
   font-size: 22px;
@@ -86,6 +89,18 @@ header {
   padding: 14px 34px;
   text-align: center;
   cursor: pointer;
+}
+
+.btn:hover {
+  box-shadow: rgba(0, 0, 0, 0.5) 2px 2px 6px 0px;
+}
+
+form input {
+  border: 1px solid rgb(149, 149, 149);
+  width: 3rem;
+  border-radius: 2px;
+  padding: 2px 5px;
+  text-align: center;
 }
 
 button[disabled] {
