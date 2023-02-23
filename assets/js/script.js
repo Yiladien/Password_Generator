@@ -31,6 +31,28 @@ function copyText() {
   navigator.clipboard.writeText(copyTextArea.value);
 }
 
+function modalAlert(modalHeaderText, modalBodyMessage) {
+  var modal = document.querySelector("#modalAlert");
+  var modalHeader = document.querySelector("#modalHeaderTitle");
+  var modalBody = document.querySelector("#modalBodyText");
+  var closeModalBtn = document.querySelector("#modalClose");
+
+  modalHeader.innerHTML = modalHeaderText;
+  modalBody.innerHTML = modalBodyMessage;
+
+  modal.style.display = "block";
+
+  closeModalBtn.onclick = function () {
+    modal.style.display = "none";
+  };
+
+  window.onclick = function (event) {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+}
+
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 regenerateBtn.addEventListener("click", rewritePassword);
@@ -277,7 +299,12 @@ var generatePassword = function () {
     passwordCriteria.charCount < passCharacterMin ||
     passwordCriteria.charCount > passCharacterMax
   ) {
-    window.alert("Please enter a password length value from 8 through 128");
+    // window.alert("Please enter a password length value from 8 through 128");
+    modalAlert(
+      "Invalid Password Length",
+      "Please enter a password length value from 8 through 128."
+    );
+
     return;
   }
 
@@ -296,8 +323,13 @@ var generatePassword = function () {
     !passwordCriteria.includeNumeric &&
     !passwordCriteria.includeSpecial
   ) {
-    window.alert(
-      "Please select a password criteria to include lowercase, uppercase, special characters, and/or numeric characters"
+    // window.alert(
+    //   "Please select a password criteria to include lowercase, uppercase, special characters, and/or numeric characters"
+    // );
+
+    modalAlert(
+      "No Criteria Selected",
+      "Please select a password criteria to include lowercase, uppercase, special characters, and/or numeric characters."
     );
   }
 
