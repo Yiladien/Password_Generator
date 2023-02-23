@@ -1,6 +1,7 @@
 // Get references to the #generate element
 var generateBtn = document.querySelector("#generate");
 var regenerateBtn = document.querySelector("#regenerate");
+var copyBtn = document.querySelector("#copytext");
 
 // Write password to the #password input
 function writePassword() {
@@ -18,9 +19,22 @@ function rewritePassword() {
   passwordText.value = password;
 }
 
+//Copy text to clipboard
+function copyText() {
+  var copyTextArea = document.querySelector("#password");
+
+  // Select the text field
+  copyTextArea.select();
+  copyTextArea.setSelectionRange(0, 99999); // mobile devices
+
+  // Copy the text inside the text field
+  navigator.clipboard.writeText(copyTextArea.value);
+}
+
 // Add event listener to generate button
 generateBtn.addEventListener("click", writePassword);
 regenerateBtn.addEventListener("click", rewritePassword);
+copyBtn.addEventListener("click", copyText);
 
 // password min and max length
 const passCharacterMin = 8;
@@ -103,38 +117,6 @@ var passwordCriteria = {
   //include special characters
   includeSpecial: false,
 };
-
-// prompt 1 - password length
-function passwordLengthPrompt() {
-  var passLengthTest = false;
-  while (passLengthTest === false) {
-    // ask user how long the password should be(must be between 8 and 128)
-    passLength = window.prompt(
-      "Enter the number of characters for the password.\n(Must be between 8 and 128)"
-    );
-
-    // converts prompt response to number
-    passLength = parseInt(passLength);
-
-    if (passLength >= passCharacterMin && passLength <= passCharacterMax) {
-      passLengthTest = true;
-    } else {
-      window.alert("You did not enter correct criteria. Please try again.");
-    }
-  }
-
-  return passLength;
-}
-
-// prompt 2, 3, 4, 5 - lower, upper, numeric, special boolean prompts
-function passwordBooleonPrompt(passwordPropertyType) {
-  // ask user if they would like upper, lower, numeric, special characters
-  var passwordPropertyBooleon = window.confirm(
-    "Do you want " + passwordPropertyType + " characters in your password?"
-  );
-
-  return passwordPropertyBooleon;
-}
 
 // holds password criteria as properties
 var passwordCriteria = {
@@ -289,7 +271,15 @@ var generatePassword = function () {
     document.querySelector("#passwordLength").value
   );
 
-  console.log(passwordCriteria.charCount);
+  // testing password length field
+  if (
+    !passwordCriteria.charCount ||
+    passwordCriteria.charCount < passCharacterMin ||
+    passwordCriteria.charCount > passCharacterMax
+  ) {
+    window.alert("Please enter a password length value from 8 through 128");
+    return;
+  }
 
   passwordCriteria.includeLower =
     document.querySelector("#includeLowercase").checked;
@@ -299,6 +289,17 @@ var generatePassword = function () {
     document.querySelector("#includeNumeric").checked;
   passwordCriteria.includeSpecial =
     document.querySelector("#includeSpecial").checked;
+
+  if (
+    !passwordCriteria.includeLower &&
+    !passwordCriteria.includeUpper &&
+    !passwordCriteria.includeNumeric &&
+    !passwordCriteria.includeSpecial
+  ) {
+    window.alert(
+      "Please select a password criteria to include lowercase, uppercase, special characters, and/or numeric characters"
+    );
+  }
 
   // saving password criteria in local storage for re-generation button
   localStorage.setItem("passLength", passwordCriteria.charCount);
@@ -327,7 +328,23 @@ var regeneratePassword = function () {
   passwordCriteria.includeSpecial =
     localStorage.getItem("passSpecial") === "true" ? true : false;
 
-  // generating password
+  // Adds the previous criteria to the form fields
+  document.querySelector("#passwordLength").value = passwordCriteria.charCount;
+
+  passwordCriteria.includeLower === true
+    ? (document.querySelector("#includeLowercase").checked = true)
+    : false;
+  passwordCriteria.includeUpper === true
+    ? (document.querySelector("#includeUppercase").checked = true)
+    : false;
+  passwordCriteria.includeNumeric === true
+    ? (document.querySelector("#includeNumeric").checked = true)
+    : false;
+  passwordCriteria.includeSpecial === true
+    ? (document.querySelector("#includeSpecial").checked = true)
+    : false;
+
+  // generating new password
   var newPassword = createPassword();
 
   // passing password to display

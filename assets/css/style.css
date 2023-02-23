@@ -134,6 +134,10 @@ button[disabled] {
 }
 
 @media (max-width: 690px) {
+  form {
+    font-size: 0.8rem;
+  }
+
   .btn {
     font-size: 1rem;
     margin: 16px 0px 0px 0px;
