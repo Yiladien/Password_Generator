@@ -25,9 +25,79 @@
           ></textarea>
         </div>
         <div class="card-footer">
+          <form>
+            <p>
+              <label for="passwordLength"
+                >Password Length (Must be between 8 and 128):</label
+              >
+              <input
+                type="text"
+                placeholder=""
+                id="passwordLength"
+                name="passwordLength"
+              />
+            </p>
+            <p>
+              <label for="includeLowercase">Include Lowercase:</label>
+              <span class="radio-wrapper">
+                <input
+                  type="checkbox"
+                  name="includeLowercase"
+                  id="includeLowercase"
+                />
+              </span>
+            </p>
+            <p>
+              <label for="includeUppercase">Include Uppercase:</label>
+              <span class="radio-wrapper">
+                <input
+                  type="checkbox"
+                  name="includeUppercase"
+                  id="includeUppercase"
+                />
+              </span>
+            </p>
+            <p>
+              <label for="includeSpecial">Include Special Characters:</label>
+              <span class="radio-wrapper">
+                <input
+                  type="checkbox"
+                  name="includeSpecial"
+                  id="includeSpecial"
+                />
+              </span>
+            </p>
+            <p>
+              <label for="includeNumeric">Include Numeric Characters:</label>
+              <span class="radio-wrapper">
+                <input
+                  type="checkbox"
+                  name="includeNumeric"
+                  id="includeNumeric"
+                />
+              </span>
+            </p>
+          </form>
           <button id="generate" class="btn">Generate Password</button>
           <button id="regenerate" class="btn">Re-Generate Password</button>
+          <div>
+            <button id="copytext" class="btn">Copy Text</button>
+          </div>
         </div>
+      </div>
+    </div>
+
+    <!-- Modal  -->
+    <div id="modalAlert" class="modal">
+      <div class="modalContent">
+        <div class="modalHeader">
+          <span id="modalClose" class="close">&times;</span>
+          <h3 id="modalHeaderTitle">test</h3>
+        </div>
+        <div class="modalBody">
+          <p id="modalBodyText">test</p>
+        </div>
+        <div class="modalFooter"></div>
       </div>
     </div>
     <script src="assets/js/script.js"></script>
